@@ -4,7 +4,7 @@ This is an interactive application created using Python and Streamlit.
 
 ## Open the application
 
-[Open my Streamlit app](https://your-app-name.streamlit.app)
+[Open my Streamlit app](https://blank-app-7n12bfe0uy.streamlit.app/)
 
 ## Run it locally
 
