@@ -14,8 +14,8 @@ st.markdown(
         [data-testid="stHeader"] { background: #ffffff; }
         h1, h2, h3, p, label, [data-testid="stMarkdownContainer"] { color: var(--navy) !important; }
         .hero { padding: 1.2rem 0 0.6rem; }
-        .hero img { width: 100%; height: 230px; object-fit: cover; border-radius: 14px; }
-        .hero-caption { margin-top: -3.8rem; padding: 1rem 1.3rem; position: relative; color: white; }
+        .hero img { width: 100%; height: 360px; object-fit: cover; object-position: center; border-radius: 14px; }
+        .hero-caption { margin-top: -7rem; padding: 1.2rem 1.3rem; position: relative; color: white; text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8); }
         .hero-caption h1, .hero-caption p { color: white !important; margin: 0; }
         .hero-caption h1 { font-size: 2rem; }
         .queue-number { background: var(--pale-blue); border: 2px solid #8bc7f2; border-radius: 14px; padding: 1rem; text-align: center; }
@@ -54,18 +54,20 @@ name = st.text_input("What is your name?", key="name")
 contact = st.text_input("What is your contact number?", key="contact")
 email = st.text_input("What is your email address?", key="email")
 repeat_email = st.text_input("Please repeat your email address:", key="repeat_email")
+
+emails_match = email.strip() and repeat_email.strip() and email.strip().casefold() == repeat_email.strip().casefold()
+if email.strip() and repeat_email.strip() and not emails_match:
+    st.error("The email addresses do not match.")
+
 sickness = st.selectbox(
     "What is your medical condition?",
     ["Select a condition", "Heart Attack", "Stroke", "Severe Bleeding", "Other"],
     key="sickness",
 )
 pain_level = st.slider("How much pain are you currently feeling?", 0, 10, 0, key="pain_level")
+st.write(f"Your selected pain level is: {pain_level}")
 
-emails_match = email.strip() and repeat_email.strip() and email.strip().casefold() == repeat_email.strip().casefold()
 form_complete = bool(name.strip() and contact.strip() and emails_match and sickness != "Select a condition")
-
-if email.strip() and repeat_email.strip() and not emails_match:
-    st.error("The email addresses do not match.")
 
 if form_complete:
     if "queue_number" not in st.session_state:
