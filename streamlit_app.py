@@ -1,14 +1,19 @@
 import streamlit as st
 
-st.title("My First Streamlit App")
+st.title("Medical Emergency Assistance")
 
-st.write("Hello! This webpage was created with Python.")
+st.write("Hello! You are in safe hands now.")
+st.write("Do you have a medical emergency?")
 
 name = st.text_input("What is your name?")
 
 if name:
     st.success(f"Welcome, {name}!")
 
-number = st.slider("Choose a number", 0, 100, 50)
+sickness = st.selectbox("What is your medical condition?", ["Heart Attack", "Stroke", "Severe Bleeding", "Other"])
+if sickness:
+    st.write(f"You selected: {sickness}")
 
-st.write("You selected:", number)
+number = st.slider("How much pain are you currently feeling?", 0, 10, 5)
+
+st.write("Your selected pain level:", number)
