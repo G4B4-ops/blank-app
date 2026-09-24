@@ -55,9 +55,13 @@ contact = st.text_input("What is your contact number?", key="contact")
 email = st.text_input("What is your email address?", key="email")
 repeat_email = st.text_input("Please repeat your email address:", key="repeat_email")
 
-emails_match = email.strip() and repeat_email.strip() and email.strip().casefold() == repeat_email.strip().casefold()
-if email.strip() and repeat_email.strip() and not emails_match:
-    st.error("The email addresses do not match.")
+emails_match = bool(
+    email.strip()
+    and repeat_email.strip()
+    and email.strip().casefold() == repeat_email.strip().casefold()
+)
+if (email.strip() or repeat_email.strip()) and email.strip().casefold() != repeat_email.strip().casefold():
+    st.warning("The email addresses do not match. Please enter the same email in both boxes.")
 
 sickness = st.selectbox(
     "What is your medical condition?",
@@ -67,7 +71,13 @@ sickness = st.selectbox(
 pain_level = st.slider("How much pain are you currently feeling?", 0, 10, 0, key="pain_level")
 st.write(f"Your selected pain level is: {pain_level}")
 
-form_complete = bool(name.strip() and contact.strip() and emails_match and sickness != "Select a condition")
+form_complete = bool(
+    name.strip()
+    and contact.strip()
+    and emails_match
+    and sickness != "Select a condition"
+    and pain_level is not None
+)
 
 if form_complete:
     if "queue_number" not in st.session_state:
@@ -75,6 +85,19 @@ if form_complete:
 
     st.markdown(
         f'<div class="queue-number">Your place in line is:<strong>{st.session_state.queue_number}</strong>'
-        "Please keep this number to see when it is your turn to see a doctor.</div>",
+        "Please wait for your number to be called so you can see a doctor.</div>",
         unsafe_allow_html=True,
     )
+else:
+    missing_fields = []
+    if not name.strip():
+        missing_fields.append("name")
+    if not contact.strip():
+        missing_fields.append("contact number")
+    if not email.strip() or not repeat_email.strip():
+        missing_fields.append("both email fields")
+    elif not emails_match:
+        missing_fields.append("matching email addresses")
+    if sickness == "Select a condition":
+        missing_fields.append("medical condition")
+    st.info("Complete these items to receive a queue number: " + ", ".join(missing_fields) + ".")
