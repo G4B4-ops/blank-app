@@ -5,7 +5,7 @@ st.title("Medical Emergency Assistance")
 st.write("Hello! You are in safe hands now.")
 st.write("Do you have a medical emergency?")
 
-name = st.text_input("What is your name?")
+name = st.text_input("What is you first and last name?")
 
 if name:
     st.success(f"Welcome, {name}!")
